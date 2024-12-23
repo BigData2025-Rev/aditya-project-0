@@ -1,21 +1,28 @@
+"""Main entry point of the application"""
+
+
 import argparse
 from csvfile import Csvfile
 from jsonfile import Jsonfile
 
 
 def process_csv(csv_file=""):
+    """Processes csv, if source is csv."""
     dataobj = Csvfile(csv_file)
     dataobj.menu()
 
 
 def process_json(json_file=""):
-    dataobj = Jsonfile(json_file)
+    """TODO: """
+    pass
 
 
 if __name__=='__main__':
     parser = argparse.ArgumentParser(description="CSV parser tool.")
-    parser.add_argument("--csv-file", help="Please enter the path to a valid csv file.", default=None)
-    parser.add_argument("--json-file", help="Please enter the path to a valid json file.", default=None)
+    parser.add_argument("--csv-file", help="Please enter the path\
+                         to a valid csv file.", default=None)
+    parser.add_argument("--json-file", help="Please enter the path\
+                         to a valid json file.", default=None)
 
     args = parser.parse_args()
     if not args.csv_file and not args.json_file:
