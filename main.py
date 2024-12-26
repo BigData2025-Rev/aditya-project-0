@@ -2,8 +2,8 @@
 
 
 import argparse
-from csvfile import Csvfile
-from jsonfile import Jsonfile
+from dataobjects.csvfile import Csvfile
+from dataobjects.jsonfile import Jsonfile
 
 
 def process_csv(csv_file=""):
