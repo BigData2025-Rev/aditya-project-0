@@ -61,7 +61,6 @@ class CSV(Data):
                 tasks.append(row)
         return tasks
 
-
     def write(self, tasks, filename):
         fieldnames = tasks[0].keys()
         with open(filename, "w") as file:

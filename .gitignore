@@ -169,3 +169,12 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
+
+.DS_Store
+.datasets/
+bin/
+blueprint/.DS_Store
+dataobjects/.DS_Store
+include/
+pyvenv.cfg
+share
