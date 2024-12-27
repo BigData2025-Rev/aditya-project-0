@@ -1,0 +1,2 @@
+class ParentDirectoryNotFound(Exception):
+    pass
