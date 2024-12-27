@@ -40,7 +40,8 @@ if __name__=="__main__":
                 while views[-1][0] != introview.IntroView:
                     views.pop()
         if not views:
-            print("\n\n\t\t\t\t\tExiting...\n\n", flush=True)
+            print("\033[H\033[J", end="")
+            print("\n\n\nExiting...\n\n", flush=True)
             time.sleep(2)
             print("\033[H\033[J", end="")
             

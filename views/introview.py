@@ -14,8 +14,7 @@ class IntroView(BaseView):
     def process_user_input(self):
         self.print_menu()
         user_input = input("Enter your choice: ")
-        invalid_input = user_input not in [str(i) for i in range(1, self.menu_items+1)]
-        while invalid_input:
+        while user_input not in [str(i) for i in range(1, self.menu_items+1)]:
             print("Incorrect choice\n", flush=True)
             print("Please select a valid choice.", flush=True)
             self.print_menu()

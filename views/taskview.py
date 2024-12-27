@@ -40,10 +40,17 @@ class TaskView(BaseView):
 
                 case 2:
                     page_name = input("Enter a page name: ")
-                    s = sum([1 for c in page_name if c in ['/', ' ', '\\']])
-                    while s:
+
+                    for c in page_name:
+                        if c in ['/', ' ', '\\']:
+                            invalid_input = True
+                    while invalid_input:
                         print("file name cannot contain / \\ or spaces")
                         page_name = input("Enter a page name: ")
+                        invalid_input = False
+                        for c in page_name:
+                            if c in ['/', ' ', '\\']:
+                                invalid_input = True
                     page = Page(page_name, self.page.tasks)
                     csv = CSV()
                     csv.write(page)
