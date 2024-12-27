@@ -1,5 +1,3 @@
-import time
-
 from views.baseview import BaseView
 
 class IntroView(BaseView):

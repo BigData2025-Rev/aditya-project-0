@@ -34,5 +34,3 @@ if __name__=='__main__':
     print(todo_app)
     print(todo_app.get_pages())
     print(todo_app.get_pages()[0].print_tasks())
-
-    
