@@ -22,13 +22,15 @@ import csv
 from blueprint.data import Data
 from exception.csvexception import CSVContentException
 from exception.csvexception import CSVFieldNameException
+from todo.page import Page
 from todo.task import Task
 
 
 class CSV(Data):
     """Csvfile class"""
-    def __init__(self, datasource):
-        super().__init__(datasource=datasource)
+    def __init__(self, datasource=None):
+        if datasource:
+            super().__init__(False, datasource=datasource)
 
     def validate_file_contents(self, expected_attributes):
         """This method checks to see if the data
@@ -55,18 +57,26 @@ class CSV(Data):
 
     def read(self):
         tasks = []
+        page_name = self.datasource.split(".csv")[0]
         with open(self.datasource, "r") as file:
             reader = csv.DictReader(file)
             for row in reader:
-                tasks.append(row)
-        return tasks
+                args = []
+                for fieldname in Task.get_valid_task_fieldnames(Task):
+                    args.append(row[fieldname])
+                task = Task(*args)
+                tasks.append(task)
+        return Page(page_name, tasks)
 
-    def write(self, tasks, filename):
-        fieldnames = tasks[0].keys()
-        with open(filename, "w") as file:
+    def write(self, page):
+        fieldnames = page.tasks[0].get_valid_task_fieldnames(Task)
+        taskdicts = []
+        for task in page.tasks:
+            taskdicts.append(task.__to__dict__())
+        with open(page.page_name, "w") as file:
             writer = csv.DictWriter(file, fieldnames=fieldnames)
             writer.writeheader()
-            writer.writerows(tasks)
+            writer.writerows(taskdicts)
 
 
 if __name__=="__main__":
@@ -80,6 +90,8 @@ if __name__=="__main__":
             Task("Practise SQL", taskstatus.OPEN),
             Task("Sign up for AWS", taskstatus.OPEN),
             Task("Tell me about yourself", taskstatus.OPEN)]
+
+    page = Page("TODO", tasks)
 
     taskdicts = []
     for task in tasks:

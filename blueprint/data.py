@@ -22,9 +22,12 @@ class Data:
        Formats allowed are json and csv.
     """
 
-    def __init__(self, datasource):
-        self.datasource = datasource
-        self.validate_path()
+    def __init__(self, write, datasource=None):
+        if not write:
+            self.datasource = datasource.strip("'")
+            self.validate_path()
+        else:
+            pass
 
     def validate_path(self):
         """
@@ -32,6 +35,8 @@ class Data:
         if the parent directories exist.
         """
         path = Path(self.datasource)
+        if not path.exists():
+            raise ParentDirectoryNotFound("file not found.")
         if not path.parent.exists():
             raise ParentDirectoryNotFound("Parent Directory not found.")
 
@@ -57,7 +62,5 @@ class Data:
 
 if __name__=="__main__":
     correct_but_parent = "../testsamples/sample.csv"
-
-
-    data = Data(correct_but_parent)
+    data = Data(False, correct_but_parent)
     print(data)

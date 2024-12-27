@@ -28,10 +28,10 @@ class Page:
 
     """
 
-    def __init__(self, page_name):
+    def __init__(self, page_name, tasks=[]):
         """Initialize object"""
         self.page_name = page_name
-        self.tasks = []
+        self.tasks = tasks
 
     def get_tasks(self):
         """Get all tasks for a page."""
