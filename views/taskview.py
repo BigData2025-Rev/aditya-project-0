@@ -40,7 +40,7 @@ class TaskView(BaseView):
 
                 case 2:
                     page_name = input("Enter a page name: ")
-
+                    invalid_input = False
                     for c in page_name:
                         if c in ['/', ' ', '\\']:
                             invalid_input = True
