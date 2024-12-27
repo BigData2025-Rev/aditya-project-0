@@ -31,6 +31,7 @@ class CSV(Data):
     def __init__(self, datasource=None):
         if datasource:
             super().__init__(False, datasource=datasource)
+            self.validate_file_contents(Task.get_valid_task_fieldnames(Task))
 
     def validate_file_contents(self, expected_attributes):
         """This method checks to see if the data
@@ -53,7 +54,7 @@ class CSV(Data):
                         raise CSVContentException("Incorrect value for attribute")
 
             except Exception as e:
-                print(e)
+                raise e
 
     def read(self):
         tasks = []
@@ -82,18 +83,20 @@ class CSV(Data):
 if __name__=="__main__":
     from todo.task import Task
     from todo.taskstatus import TaskStatus as taskstatus
-    CSV = CSV("../blueprint/sample.csv")
-    CSV.validate_file_contents(Task.get_valid_task_fieldnames(Task))
-    CSV.read()
+    try:
+        CSV = CSV("./testsamples/sampleerror.csv")
+        CSV.validate_file_contents(Task.get_valid_task_fieldnames(Task))
 
-    tasks = [Task("Finish Project 0",  taskstatus.OPEN),
-            Task("Practise SQL", taskstatus.OPEN),
-            Task("Sign up for AWS", taskstatus.OPEN),
-            Task("Tell me about yourself", taskstatus.OPEN)]
+        CSV.read()
 
-    page = Page("TODO", tasks)
+        tasks = [Task("Finish Project 0",  taskstatus.OPEN),
+                Task("Practise SQL", taskstatus.OPEN),
+                Task("Sign up for AWS", taskstatus.OPEN),
+                Task("Tell me about yourself", taskstatus.OPEN)]
 
-    taskdicts = []
-    for task in tasks:
-        taskdicts.append(task.__to__dict__())
-    CSV.write(taskdicts, "output.csv")
+        page = Page("TODOd", tasks)
+
+
+        CSV.write(page)
+    except Exception as e:
+        print(e)

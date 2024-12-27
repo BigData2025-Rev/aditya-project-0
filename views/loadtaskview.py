@@ -32,22 +32,15 @@ class LoadTaskView(BaseView):
                     try:
                         csv = CSV(csv_input_name)
                     except ParentDirectoryNotFound as pdn:
-                        print(pdn)
                         print("Invalid path. Enter a valid file path.\n", flush=True)
-                        time.sleep(1)
                         continue
                     except CSVFieldNameException as cfn:
-                        print(cfn)
                         print("Invalid CSV field names. Provide a valid csv.\n", flush=True)
-                        time.sleep(1)
                         continue
                     except CSVContentException as cc:
-                        print(cc)
                         print("Invalid values in CSV. Provide a valid csv.\n", flush=True)
-                        time.sleep(1)
                         continue
                     break
-
                 page = csv.read()
                 print(page)
                 return 'taskview', page
