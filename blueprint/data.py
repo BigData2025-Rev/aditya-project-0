@@ -12,12 +12,12 @@ root_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 
 sys.path.append(root_dir)
 
-from abc import abstractmethod
+from abc import ABC, abstractmethod
 from pathlib import Path
 from exception.pathexception import ParentDirectoryNotFound
 
 
-class Data:
+class Data(ABC):
     """This class is the parent class for different types of data files
        Formats allowed are json and csv.
     """

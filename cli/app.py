@@ -44,6 +44,3 @@ if __name__=="__main__":
             print("\n\n\nExiting...\n\n", flush=True)
             time.sleep(2)
             print("\033[H\033[J", end="")
-            
-            
-

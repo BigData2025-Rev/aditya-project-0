@@ -178,3 +178,4 @@ dataobjects/.DS_Store
 include/
 pyvenv.cfg
 share
+sampleout/
