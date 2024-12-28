@@ -46,4 +46,3 @@ class LoadTaskView(BaseView):
             
             case 2:
                 return 'return_to_main_menu'
-                
