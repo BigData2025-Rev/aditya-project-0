@@ -10,14 +10,8 @@ root_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 
 sys.path.append(root_dir)
 
-# import pandas as pd
 import csv
-# from pandas.api import types
-# import spacy
-# import matplotlib.pyplot as plt
-# from langchain_openai import OpenAI
-# from langchain.prompts import PromptTemplate
-# from langchain.chains import LLMChain
+from enum import EnumType
 
 from blueprint.data import Data
 from exception.csvexception import CSVContentException
@@ -31,7 +25,7 @@ class CSV(Data):
     def __init__(self, datasource=None):
         if datasource:
             super().__init__(False, datasource=datasource)
-            self.validate_file_contents(Task.get_valid_task_fieldnames(Task))
+            self.validate_file_contents(list(Task.get_valid_task_fieldnames(Task).keys()))
 
     def validate_file_contents(self, expected_attributes):
         """This method checks to see if the data
@@ -57,20 +51,40 @@ class CSV(Data):
                 raise e
 
     def read(self):
+        try:
+            self.validate_file_contents(Task.get_valid_task_fieldnames(Task))
+        except Exception as e:
+            raise e
         tasks = []
-        page_name = self.datasource.split(".csv")[0]
+        filename = os.path.basename(self.datasource)
+        page_name = filename.split(".csv")[0]
         with open(self.datasource, "r") as file:
             reader = csv.DictReader(file)
             for row in reader:
                 args = []
-                for fieldname in Task.get_valid_task_fieldnames(Task):
-                    args.append(row[fieldname])
+                for fieldname, classname in Task.get_valid_task_fieldnames(Task).items():
+                    try:
+                        val = row[fieldname]
+                        if classname not in (int, str, float, bool):
+                            if type(classname) == EnumType:
+                                classname = classname.__mro__[0]
+                                for v in classname:
+                                    subclass = type(v.value)
+                                    val = subclass(val)       
+                                val = classname(val)
+                        else:
+                            val = classname(val)
+                    except Exception:
+                        pass
+                    args.append(val)
+
                 task = Task(*args)
                 tasks.append(task)
+        print(tasks)
         return Page(page_name, tasks)
 
     def write(self, page):
-        fieldnames = page.tasks[0].get_valid_task_fieldnames(Task)
+        fieldnames = list(page.tasks[0].get_valid_task_fieldnames(Task).keys())
         taskdicts = []
         for task in page.tasks:
             taskdicts.append(task.__to__dict__())
@@ -84,18 +98,17 @@ if __name__=="__main__":
     from todo.task import Task
     from todo.taskstatus import TaskStatus as taskstatus
     try:
-        CSV = CSV("./testsamples/sampleerror.csv")
-        CSV.validate_file_contents(Task.get_valid_task_fieldnames(Task))
+        CSV = CSV("./testsamples/sample.csv")
+        CSV.validate_file_contents(list(Task.get_valid_task_fieldnames(Task).keys()))
 
-        CSV.read()
+        page = CSV.read()
 
         tasks = [Task("Finish Project 0",  taskstatus.OPEN),
                 Task("Practise SQL", taskstatus.OPEN),
                 Task("Sign up for AWS", taskstatus.OPEN),
                 Task("Tell me about yourself", taskstatus.OPEN)]
 
-        page = Page("TODOd", tasks)
-
+        page = Page("TODOD", tasks)
 
         CSV.write(page)
     except Exception as e:

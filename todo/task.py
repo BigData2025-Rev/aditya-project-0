@@ -23,7 +23,7 @@ class Task:
     @staticmethod
     def get_valid_task_fieldnames(cls):
         init_signature = inspect.signature(cls.__init__)
-        attributes = [attribute for attribute in init_signature.parameters.keys() if attribute != 'self']
+        attributes = {attribute: classname.annotation for attribute, classname in init_signature.parameters.items() if attribute != 'self'}
         return attributes
 
     def get_task_name(self):

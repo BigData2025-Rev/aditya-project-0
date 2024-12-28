@@ -1,19 +1,27 @@
 import os
 import sys
-import time
 
 root_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 
 sys.path.append(root_dir)
 
 
-from views import introview, taskview, loadtaskview
+from views import introview, taskview, loadtaskview, edittaskview, viewtask
+
 from collections import deque
+import time
+
 registry = {
     'introview': introview.IntroView,
     'taskview': taskview.TaskView,
     'loadtaskview': loadtaskview.LoadTaskView,
+    'edittaskview': edittaskview.EditTaskView,
+    'viewtask': viewtask.ViewTask,
     'return_to_main_menu': None
+}
+
+navigate_registry = {
+    'backto': 1
 }
 
 if __name__=="__main__":
@@ -27,6 +35,14 @@ if __name__=="__main__":
         else:
             return_val, *returned_args = current_view(*args).process_user_input()
         
+        # process back navigation.
+        if '_' in return_val:
+            commands = return_val.split("_")
+            while registry[commands[1]] != views[-1][0]:
+                views.pop()
+            continue
+
+        # only main menu doesn't have args.
         if return_val in registry:
             if not registry[return_val]:
                 views.pop()
@@ -39,8 +55,9 @@ if __name__=="__main__":
             else:
                 while views[-1][0] != introview.IntroView:
                     views.pop()
+
         if not views:
             print("\033[H\033[J", end="")
             print("\n\n\nExiting...\n\n", flush=True)
-            time.sleep(2)
+            time.sleep(0.5)
             print("\033[H\033[J", end="")

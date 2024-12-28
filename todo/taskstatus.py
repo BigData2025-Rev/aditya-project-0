@@ -18,3 +18,6 @@ class TaskStatus(Enum):
     """
     OPEN = 1
     COMPLETE = 2
+
+    def __invert__(self):
+        return TaskStatus.OPEN if self == TaskStatus.COMPLETE else TaskStatus.COMPLETE

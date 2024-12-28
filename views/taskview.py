@@ -14,8 +14,8 @@ class TaskView(BaseView):
     def print_menu(self):
         print("\033[H\033[J", end="")
         print("Please select an option from below.\n", flush=True)
-        print("\t1. Edit Task.\n")
-        print("\t2. Save Tasks to a Page.\n")
+        print("\t1. Edit Page.\n")
+        print("\t2. View Page.\n")
         print("\t3. Go back to main menu.\n")
 
     def process_user_input(self):
@@ -31,33 +31,10 @@ class TaskView(BaseView):
             user_input = int(user_input)
             match user_input:
                 case 1:
-                    task_name = input("Enter task name: ")
-                    while task_name not in [task.task_name for task in self.tasks]:
-                        print("Could not find task_name.\n")
-                        task_name = input("Enter task name: ")
-                    
-                    return 'edittask', task_name
-
+                    return 'edittaskview', self.page
                 case 2:
-                    page_name = input("Enter a page name: ")
-                    invalid_input = False
-                    for c in page_name:
-                        if c in ['/', ' ', '\\']:
-                            invalid_input = True
-                    while invalid_input:
-                        print("file name cannot contain / \\ or spaces")
-                        page_name = input("Enter a page name: ")
-                        invalid_input = False
-                        for c in page_name:
-                            if c in ['/', ' ', '\\']:
-                                invalid_input = True
-                    page = Page(page_name, self.page.tasks)
-                    csv = CSV()
-                    csv.write(page)
-                    continue
+                    return 'viewtask', self.page
                 case 3:
                     break
 
         return 'return_to_main_menu'
-        
-

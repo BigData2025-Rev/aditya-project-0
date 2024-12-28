@@ -42,7 +42,6 @@ class LoadTaskView(BaseView):
                         continue
                     break
                 page = csv.read()
-                print(page)
                 return 'taskview', page
             
             case 2:

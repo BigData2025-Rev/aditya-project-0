@@ -41,6 +41,11 @@ class Page:
         """Add task to a page."""
         self.tasks.append(task)
 
+    def get_task(self, task_name):
+        for task in self.tasks:
+            if task.get_task_name() == task_name:
+                return task
+
     def remove_task(self, task):
         """Remove task from a page."""
         self.tasks.remove(task)
@@ -54,3 +59,17 @@ class Page:
         """Print all tasks within the page."""
         for task in self.tasks:
             print(task)
+
+def create_sample_page(sample_error=False):
+    from todo.task import Task
+    from dataobjects.csvfile import CSV
+
+    filename = "./testsamples/sample.csv"
+    if sample_error:
+        filename = "./testsamples/sampleerror.csv"
+    try:
+        csv = CSV(filename)
+        page = csv.read()
+        return page
+    except Exception as e:
+        print(e)
