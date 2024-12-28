@@ -80,7 +80,6 @@ class CSV(Data):
 
                 task = Task(*args)
                 tasks.append(task)
-        print(tasks)
         return Page(page_name, tasks)
 
     def write(self, page):
