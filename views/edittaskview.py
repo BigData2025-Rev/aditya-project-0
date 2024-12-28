@@ -48,7 +48,6 @@ class EditTaskView(BaseView):
                     while True:
                         try:
                             new_task_name = str(new_task_name)
-                        
                         except ValueError:
                             print("Not a string value")
                             continue
@@ -96,4 +95,4 @@ if __name__=='__main__':
     from todo.page import create_sample_page
     page = create_sample_page()
     editview = EditTaskView(page)
-    editview.process_user_input()
+    method, arg = editview.process_user_input()
