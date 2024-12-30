@@ -39,6 +39,9 @@ class Page:
 
     def add_task(self, task):
         """Add task to a page."""
+        for t in self.tasks:
+            if task.task_name == t.task_name:
+                return
         self.tasks.append(task)
 
     def get_task(self, task_name):
@@ -46,9 +49,13 @@ class Page:
             if task.get_task_name() == task_name:
                 return task
 
-    def remove_task(self, task):
+    def remove_task(self, task_name):
         """Remove task from a page."""
-        self.tasks.remove(task)
+        task_to_remove = None
+        for t in self.tasks:
+            if t.task_name == task_name:
+                task_to_remove = t
+        self.tasks.remove(task_to_remove)
 
     def reorder_task(self, task, position):
         """Change the task order in the page."""

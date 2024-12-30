@@ -19,7 +19,7 @@ class LoadTaskView(BaseView):
         user_input = input("Enter your choice: ")
         while user_input not in [str(i) for i in range(1, self.menu_items+1)]:
             print("Incorrect choice\n", flush=True)
-            print("Please select a valid choice.", flush=True)
+            print("Please select a valid choice.\n", flush=True)
             time.sleep(2)
             self.print_menu()
             user_input = input("Enter your choice: ")

@@ -8,20 +8,23 @@ sys.path.append(root_dir)
 import copy
 
 from views.baseview import BaseView
+from todo.taskstatus import TaskStatus
 
 from tabulate import tabulate
 
 class ViewTask(BaseView):
     menu_items = 1
+    task_status_lookup = {TaskStatus.OPEN:'OPEN', TaskStatus.COMPLETE:'COMPLETE'}
 
     def __init__(self, page):
         self.page = page
 
     def print_card(self):
-        plist_path = self.page.page_name+".plist"
-
         dict_tasks = copy.deepcopy(self.page.get_tasks())
+        task_lookup = {1: 'OPEN', 2: 'COMPLETE'}
         tasks = [task.__to__dict__() for task in dict_tasks]
+        for task in tasks:
+            task['task_status'] = task_lookup[task['task_status']]
         table = tabulate(tasks, headers='keys', tablefmt='pretty')
         lines = table.splitlines()
         lines_with_padding = [("\t" * 2 + line) for line in lines]
@@ -29,15 +32,6 @@ class ViewTask(BaseView):
         indented_lines = "\n".join(lines_with_padding)
         print(indented_lines)
         print("\n\n")
-        # with open(plist_path, 'wb') as f:
-        #     plistlib.dump(tasks, f)
-        # import subprocess
-        # try:
-        #     subprocess.run(['open', '-a', 'Xcode', plist_path], check=True)
-        #     print(f"Successfully opened: {plist_path}")
-        # except subprocess.CalledProcessError as e:
-        #     print(f"Error occurred while opening the plist: {e}")
-        
 
     def print_menu(self):
         print("\033[H\033[J", end="")
@@ -53,7 +47,7 @@ class ViewTask(BaseView):
                 print("Please select a valid choice.")
                 self.print_menu()
                 user_input = input("Enter your choice: ")
-        
+
         user_input = int(user_input)
         match user_input:
             case 1:

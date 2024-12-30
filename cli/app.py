@@ -6,7 +6,7 @@ root_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 sys.path.append(root_dir)
 
 
-from views import introview, taskview, loadtaskview, edittaskview, viewtask
+from views import introview, taskview, loadtaskview, edittaskview, viewtask, addtaskview, removetaskview
 
 from collections import deque
 import time
@@ -17,6 +17,8 @@ registry = {
     'loadtaskview': loadtaskview.LoadTaskView,
     'edittaskview': edittaskview.EditTaskView,
     'viewtask': viewtask.ViewTask,
+    'addtask': addtaskview.AddTaskView,
+    'removetask': removetaskview.RemoveTaskView,
     'return_to_main_menu': None
 }
 
@@ -34,7 +36,7 @@ if __name__=="__main__":
             return_val, *returned_args = current_view().process_user_input()
         else:
             return_val, *returned_args = current_view(*args).process_user_input()
-        
+
         # process back navigation.
         if '_' in return_val:
             commands = return_val.split("_")
