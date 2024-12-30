@@ -6,7 +6,7 @@ class IntroView(BaseView):
     def print_menu(self):
         print("\033[H\033[J", end="")
         print("Please select an option from below.\n", flush=True)
-        print("\t1. Load task from file.\n", flush=True)
+        print("\t1. Load page from file.\n", flush=True)
         print("\t2. Exit\n", flush=True)
 
     def process_user_input(self):

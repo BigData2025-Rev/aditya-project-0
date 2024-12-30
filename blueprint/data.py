@@ -35,6 +35,8 @@ class Data(ABC):
         if the parent directories exist.
         """
         path = Path(self.datasource)
+        if path.is_dir():
+            raise ParentDirectoryNotFound("Cannot process directories.")
         if not path.exists():
             raise ParentDirectoryNotFound("file not found.")
         if not path.parent.exists():

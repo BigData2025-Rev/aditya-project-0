@@ -98,7 +98,7 @@ class EditTaskView(BaseView):
                         for c in page_name:
                             if c in ['/', ' ', '\\']:
                                 invalid_input = True
-                    page = Page(page_name, self.page.tasks)
+                    page = Page(page_name, copy.deepcopy(self.page.tasks))
                     csv = CSV()
                     csv.write(page)
                     continue
