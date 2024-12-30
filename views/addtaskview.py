@@ -30,15 +30,14 @@ class AddTaskView(BaseView):
         lines_with_padding = [("\t" * 2 + line) for line in lines]
 
         indented_lines = "\n".join(lines_with_padding)
-        print(indented_lines)
-        print("\n\n")
+        print(indented_lines, flush=True)
+        print("\n\n", flush=True)
 
         print("Please select an option from below.\n", flush=True)
         print("\t1. Add task name.\n", flush=True)
         print("\t2. Go back.\n", flush=True)
 
     def process_user_input(self):
-        
         while True:
             self.print_menu()
             user_input = input("Enter your choice: ")

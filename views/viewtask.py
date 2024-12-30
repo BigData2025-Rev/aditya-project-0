@@ -30,8 +30,8 @@ class ViewTask(BaseView):
         lines_with_padding = [("\t" * 2 + line) for line in lines]
 
         indented_lines = "\n".join(lines_with_padding)
-        print(indented_lines)
-        print("\n\n")
+        print(indented_lines, flush=True)
+        print("\n\n", flush=True)
 
     def print_menu(self):
         print("\033[H\033[J", end="")

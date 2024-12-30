@@ -24,7 +24,7 @@ class EditTaskView(BaseView):
         self.page = page
 
     def print_menu(self):
-        print("\033[H\033[J", end="")
+        print("\033[H\033[J", end="", flush=True)
         task_lookup = {1: 'OPEN', 2: 'COMPLETE'}
         dict_tasks = copy.deepcopy(self.page.get_tasks())
         tasks = [task.__to__dict__() for task in dict_tasks]
@@ -35,8 +35,8 @@ class EditTaskView(BaseView):
         lines_with_padding = [("\t" * 2 + line) for line in lines]
 
         indented_lines = "\n".join(lines_with_padding)
-        print(indented_lines)
-        print("\n\n")
+        print(indented_lines, flush=True)
+        print("\n\n", flush=True)
 
         print("Please select an option from below.\n", flush=True)
         print("\t1. Change task name.\n", flush=True)
@@ -45,9 +45,9 @@ class EditTaskView(BaseView):
         print("\t4. Go back.\n", flush=True)
 
     def process_user_input(self):
-        self.print_menu()
-        user_input = input("Enter your choice: ")
         while True:
+            self.print_menu()
+            user_input = input("Enter your choice: ")
             while user_input not in [str(i) for i in range(1, self.menu_items+1)]:
                 print("Incorrect choice\n")
                 print("Please select a valid choice.\n")
@@ -61,10 +61,20 @@ class EditTaskView(BaseView):
                     while not self.page.get_task(old_task_name):
                         print("Task not found.")
                         old_task_name = input("Enter task name to change: ")
-                    new_task_name = (input("Enter new task name: "))
                     while True:
                         try:
+                            new_task_name = (input("Enter new task name: "))
                             new_task_name = str(new_task_name)
+                            if new_task_name == old_task_name:
+                                break
+                            while True:
+                                for t in self.page.get_tasks():
+                                    if t.get_task_name() == new_task_name:
+                                        new_task_name = input("Enter new task name: ")
+                                        new_task_name = str(new_task_name)
+                                        if new_task_name == old_task_name:
+                                            break
+                                break
                         except ValueError:
                             print("Not a string value")
                             continue
